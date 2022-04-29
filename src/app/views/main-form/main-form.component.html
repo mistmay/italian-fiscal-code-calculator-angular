@@ -1,0 +1,60 @@
+<main class="bg-light d-flex justify-content-center align-items-center py-2">
+  <div class="container">
+    <div class="p-5 bg-white">
+      <h1 class="w-100 text-center fs-2 mb-3">Calcola il tuo Codice Fiscale:</h1>
+      <form [formGroup]="form" (ngSubmit)="getForm()" *ngIf="options.length > 0; else loading">
+        <span class="text-danger"
+          *ngIf="form.controls['surname'].dirty && form.hasError('required', 'surname')">Richiesto<br></span>
+        <span class="text-danger" *ngIf="form.controls['surname'].dirty && form.hasError('minlength', 'surname')">Almeno
+          3 lettere<br></span>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Cognome:</mat-label>
+          <input matInput placeholder="Cognome" type="text" formControlName="surname">
+        </mat-form-field>
+        <span class="text-danger"
+          *ngIf="form.controls['name'].dirty && form.hasError('required', 'name')">Richiesto<br></span>
+        <span class="text-danger" *ngIf="form.controls['name'].dirty && form.hasError('minlength', 'name')">Almeno
+          3 lettere<br></span>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Nome:</mat-label>
+          <input matInput placeholder="Nome" type="text" formControlName="name">
+        </mat-form-field>
+        <div class="example-section w-100">
+          <label class="example-margin">Sesso:</label>
+          <mat-radio-group name="sex" formControlName="sex">
+            <mat-radio-button class="example-margin" value="male" name="sex">M</mat-radio-button>
+            <mat-radio-button class="example-margin" value="female" name="sex">F</mat-radio-button>
+          </mat-radio-group>
+          <span class="text-danger" *ngIf="form.hasError('required', 'sex')">Richiesto<br></span>
+        </div>
+        <span class="text-danger" *ngIf="form.controls['date'].dirty && form.hasError('required', 'date')">Richiesto
+          (Inserire una data nel formato gg/mm/yyyy)<br></span>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Data di Nascita:</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <span class="text-danger"
+          *ngIf="form.controls['city'].dirty && form.hasError('required', 'city')">Richiesto<br></span>
+        <span class="text-danger" *ngIf="form.controls['city'].dirty && form.hasError('isNotOption', 'city')">
+          Scegliere una città dalla lista<br>
+        </span>
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Luogo di Nascita</mat-label>
+          <input type="text" placeholder="Luogo di Nascita" matInput [matAutocomplete]="auto" formControlName="city">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" class="w-100" [disabled]="form.invalid">Genera</button>
+        <p *ngIf="fiscalCode !== ''" class="fw-bold fs-5 w-100 text-center mt-4">{{ fiscalCode }}</p>
+      </form>
+    </div>
+  </div>
+</main>
+<ng-template #loading>
+  <p class="text-center">Caricamento in Corso....</p>
+</ng-template>

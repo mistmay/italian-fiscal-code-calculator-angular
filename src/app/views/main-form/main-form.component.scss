@@ -1,0 +1,26 @@
+main {
+  min-height: calc(100vh - 70px);
+}
+
+.container>div {
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 0 10px;
+}
+
+button {
+  &:hover {
+    opacity: 0.8;
+  }
+}
